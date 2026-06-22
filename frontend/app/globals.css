@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-inter), 'Inter Fallback', ui-sans-serif, system-ui;
+  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback', ui-monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-state-surviving: var(--state-surviving);
+  --color-state-contested: var(--state-contested);
+  --color-state-killed: var(--state-killed);
+  --color-state-blocked: var(--state-blocked);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  color-scheme: dark;
+
+  --background: #050505;
+  --foreground: #ffffff;
+
+  --surface-1: #0a0a0a;
+  --surface-2: #111111;
+  --surface-3: #161616;
+
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #111111;
+  --popover-foreground: #ffffff;
+
+  --primary: #e8e8e8;
+  --primary-foreground: #050505;
+  --secondary: #161616;
+  --secondary-foreground: #e8e8e8;
+  --muted: #111111;
+  --muted-foreground: #b8b8b8;
+  --accent: #161616;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+
+  --border: #222222;
+  --border-strong: #2a2a2a;
+  --input: #222222;
+  --ring: #2a2a2a;
+
+  --state-surviving: #22d3ee;
+  --state-contested: #f59e0b;
+  --state-killed: #ef4444;
+  --state-blocked: #525252;
+
+  --radius: 0.5rem;
+
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #d4d4d4;
+  --sidebar-border: #222222;
+  --sidebar-accent: #161616;
+  --sidebar-accent-foreground: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Custom thin scrollbars for enterprise feel */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: 9999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .text-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.liquid-glass {
+  background: rgba(35, 35, 40, 0.55) !important;
+  backdrop-filter: blur(22px) saturate(1.4) brightness(1.08) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4) brightness(1.08) !important;
+  border-radius: 20px !important;
+  border: none !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 12px 32px rgba(0, 0, 0, 0.5) !important;
+  --glass-shine-angle: 15deg;
+}
+
+.liquid-glass:not(.absolute):not(.fixed):not(.relative):not(.sticky) {
+  position: relative;
+}
+
+.liquid-glass:nth-child(2n) { --glass-shine-angle: 75deg; }
+.liquid-glass:nth-child(3n) { --glass-shine-angle: 135deg; }
+.liquid-glass:nth-child(4n) { --glass-shine-angle: 195deg; }
+.liquid-glass:nth-child(5n) { --glass-shine-angle: 255deg; }
+.liquid-glass:nth-child(6n) { --glass-shine-angle: 315deg; }
+.liquid-glass:nth-child(3n+1) { --glass-shine-angle: 45deg; }
+.liquid-glass:nth-child(4n+2) { --glass-shine-angle: 115deg; }
+.liquid-glass:nth-child(5n+3) { --glass-shine-angle: 220deg; }
+.liquid-glass:nth-child(6n+4) { --glass-shine-angle: 290deg; }
+
+.liquid-glass::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  padding: 1px !important; /* thin, crisp highlight border */
+  background: conic-gradient(
+    from var(--glass-shine-angle, 0deg),
+    rgba(255, 255, 255, 0.5) 0deg,
+    rgba(255, 255, 255, 0.08) 60deg,
+    rgba(255, 255, 255, 0.08) 300deg,
+    rgba(255, 255, 255, 0.5) 360deg
+  ) !important;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0) !important;
+  -webkit-mask-composite: xor !important;
+  mask-composite: exclude !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+}
+
