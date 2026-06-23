@@ -41,21 +41,23 @@ export function NodeDetailsPanel({
   const [sending, setSending] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
-  // Scroll to bottom of chat history when messages update
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [node?.chatHistory])
 
   if (!node) {
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 px-8 text-center bg-transparent">
-        <div className="flex size-11 items-center justify-center rounded-md border border-border bg-surface-2">
-          <MousePointerClick className="size-5 text-muted-foreground" strokeWidth={1.5} />
+      <div className="flex h-full flex-col items-center justify-center gap-3 px-8 text-center" style={{ background: 'transparent' }}>
+        <div
+          className="flex size-11 items-center justify-center rounded-xl"
+          style={{ border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.06)' }}
+        >
+          <MousePointerClick className="size-5" strokeWidth={1.5} style={{ color: 'rgba(255,255,255,0.35)' }} />
         </div>
-        <div className="text-[13px] font-medium text-secondary-foreground">
+        <div className="font-mono text-[11px] uppercase tracking-[0.14em]" style={{ color: 'rgba(255,255,255,0.60)' }}>
           No assumption selected
         </div>
-        <p className="max-w-[220px] text-xs leading-relaxed text-muted-foreground">
+        <p className="max-w-[220px] font-mono text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.30)' }}>
           Select a node in the dependency graph to inspect its details, chat with its persona, or view resolution paths.
         </p>
       </div>
@@ -104,33 +106,45 @@ export function NodeDetailsPanel({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.22, ease: 'easeOut' }}
         className="flex h-full flex-col"
+        style={{ background: 'transparent' }}
       >
         {/* Header */}
-        <div className="border-b border-border/40 px-5 py-4">
+        <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
               Synthesis Gate
             </span>
             <StateBadge state={node.state} />
           </div>
-          <h2 className="mt-3 text-[16px] font-semibold leading-snug text-foreground">
+          <h2 className="mt-3 font-mono text-[14px] font-semibold uppercase tracking-[0.08em] text-foreground">
             {node.assumption}
           </h2>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-5 py-6 space-y-6">
-          <div className="rounded-md border border-border/40 bg-surface-2/15 p-4 text-center space-y-4">
+          <div
+            className="liquid-glass p-4 text-center space-y-4"
+          >
             <div className="flex justify-center">
-              <div className={`flex size-14 items-center justify-center rounded-full border ${isRoadmapActive ? 'border-primary bg-primary/10 text-primary' : 'border-border/40 bg-surface-3/30 text-muted-foreground'}`}>
-                {isRoadmapActive ? <Unlock className="size-6 animate-pulse" /> : <Lock className="size-6" />}
+              <div
+                className="flex size-14 items-center justify-center"
+                style={{
+                  border: isRoadmapActive ? '1px solid rgba(34,211,238,0.50)' : '1px solid rgba(255,255,255,0.12)',
+                  background: isRoadmapActive ? 'rgba(34,211,238,0.06)' : 'rgba(255,255,255,0.04)',
+                }}
+              >
+                {isRoadmapActive
+                  ? <Unlock className="size-6 animate-pulse" style={{ color: '#22d3ee' }} />
+                  : <Lock className="size-6" style={{ color: 'rgba(255,255,255,0.35)' }} />
+                }
               </div>
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-medium text-foreground">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-foreground">
                 {isRoadmapActive ? 'Synthesis Ready' : 'Synthesis Locked'}
               </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
+              <p className="font-mono text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.40)' }}>
                 {isRoadmapActive
                   ? 'All assumptions have been verified or resolved. You are ready to generate the final execution plan or get a recommended pivot strategy.'
                   : 'You must resolve and validate all assumption nodes in the graph first. Chat with their skeptical personas to decide whether each assumption survives or fails.'}
@@ -140,21 +154,24 @@ export function NodeDetailsPanel({
 
           {/* Dependencies List */}
           <div className="space-y-3">
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+            <h4 className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
               Required Assumptions ({deps.length})
             </h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               {deps.map((dep) => (
                 <button
                   key={dep.id}
                   onClick={() => onSelect(dep.id)}
-                  className="group flex items-center gap-3 rounded-sm border border-border/40 bg-surface-1/20 px-3 py-2 text-left transition-colors hover:border-border-strong hover:bg-surface-2/30"
+                  className="group flex items-center gap-3 px-3 py-2 text-left transition-colors cursor-pointer"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '12px' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.16)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)' }}
                 >
                   <span
-                    className="size-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: STATE_META[dep.state]?.color ?? '#737373' }}
+                    className="size-1.5 shrink-0"
+                    style={{ background: STATE_META[dep.state]?.color ?? '#737373' }}
                   />
-                  <span className="flex-1 truncate text-xs text-secondary-foreground group-hover:text-foreground">
+                  <span className="flex-1 truncate font-mono text-[11px]" style={{ color: 'rgba(255,255,255,0.65)' }}>
                     {dep.label}
                   </span>
                   <StateBadge state={dep.state} className="scale-90" showDot={false} />
@@ -165,11 +182,14 @@ export function NodeDetailsPanel({
         </div>
 
         {/* Footer Actions */}
-        <div className="border-t border-border/40 bg-surface-1/25 px-5 py-4 backdrop-blur-[20px] saturate-[1.4]">
+        <div className="px-5 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.12)', background: 'transparent' }}>
           {isRoadmapActive ? (
             <button
               onClick={handleSynthesizeClick}
-              className="flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-4 py-2.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 cursor-pointer shadow-lg shadow-primary/10"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              style={{ border: '1px solid #22d3ee', color: '#22d3ee', background: 'transparent' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(34,211,238,0.07)' }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
             >
               <Sparkles className="size-4" />
               Unlock Synthesis Report
@@ -177,7 +197,8 @@ export function NodeDetailsPanel({
           ) : (
             <button
               disabled
-              className="flex w-full items-center justify-center gap-2 rounded-sm border border-border/40 bg-surface-2/30 px-4 py-2.5 text-[13px] font-medium text-muted-foreground/60 opacity-50 cursor-not-allowed"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] opacity-40 cursor-not-allowed"
+              style={{ border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.40)' }}
             >
               <Lock className="size-4" />
               Unlock Synthesis Report
@@ -197,71 +218,72 @@ export function NodeDetailsPanel({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, ease: 'easeOut' }}
-      className="flex h-full flex-col bg-transparent"
+      className="flex h-full flex-col"
+      style={{ background: 'transparent' }}
     >
       {/* Header */}
-      <div className="border-b border-border/40 px-5 py-4 shrink-0">
+      <div className="px-5 py-4 shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+          <span className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
             Assumption · {node.id.toUpperCase()}
           </span>
           <StateBadge state={node.state} />
         </div>
-        <h2 className="mt-3 text-[14px] font-semibold leading-snug text-foreground text-pretty">
+        <h2 className="mt-3 font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-foreground">
           {node.assumption}
         </h2>
       </div>
 
       {/* Main Content Area - Scrollable */}
-      <div className="flex-1 overflow-y-auto min-h-0 space-y-4 py-4 px-5 scrollbar-thin">
+      <div className="flex-1 overflow-y-auto min-h-0 space-y-3 py-4 px-5 scrollbar-thin">
         {/* Meta grid */}
-        <div className="grid grid-cols-2 divide-x divide-border/40 border border-border/40 rounded-sm bg-surface-2/15">
+        <div
+          className="liquid-glass grid grid-cols-2"
+        >
           <Meta label="Dimension" value={node.dimension} />
           <Meta label="Layer" value={node.layer} />
         </div>
 
-        {/* Confidence Progress bar - only if active or resolved */}
+        {/* Confidence Progress bar */}
         {node.state !== 'locked' && node.state !== 'blocked' && node.state !== 'pending' && (
-          <div className="border border-border/40 rounded-sm bg-surface-2/15 px-4 py-3">
+          <div className="liquid-glass px-4 py-3">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="font-mono text-[9px] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 Persona Confidence
               </span>
-              <span
-                className="text-tabular text-xs font-semibold"
-                style={{ color: meta.color }}
-              >
+              <span className="text-tabular font-mono text-[11px] font-semibold" style={{ color: meta.color }}>
                 {node.confidence}%
               </span>
             </div>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-surface-3/40">
+            <div className="mt-2 h-0.5 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
               <div
-                className="h-full rounded-full transition-all duration-300"
-                style={{ width: `${node.confidence}%`, backgroundColor: meta.color }}
+                className="h-full transition-all duration-300"
+                style={{ width: `${node.confidence}%`, background: meta.color }}
               />
             </div>
           </div>
         )}
 
-        {/* Assigned Persona Skeptic Details */}
+        {/* Assigned Persona */}
         {persona && (
-          <div className="rounded border border-border/40 bg-surface-2/15 p-3.5 space-y-2">
+          <div className="liquid-glass p-3.5 space-y-2">
             <div className="flex items-center gap-2">
               <img
                 src={getPersonaAvatar(persona.name)}
                 alt={persona.name}
-                className="size-7 rounded-full object-cover shrink-0"
+                className="size-7 object-cover shrink-0"
+                style={{ filter: 'grayscale(40%)' }}
               />
               <div>
-                <h4 className="text-[12px] font-semibold text-foreground">{persona.name}</h4>
-                <p className="text-[10px] text-muted-foreground">{persona.role}</p>
+                <h4 className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-foreground">{persona.name}</h4>
+                <p className="font-mono text-[9px] uppercase tracking-[0.12em]" style={{ color: 'rgba(255,255,255,0.35)' }}>{persona.role}</p>
               </div>
             </div>
-            <div className="border-t border-border/40 pt-2">
-              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+            <div className="pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <span className="font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 Primary Concern
               </span>
-              <p className="mt-1 text-[11px] leading-relaxed text-secondary-foreground font-medium italic">
+              <p className="mt-1 font-mono text-[10px] leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.60)' }}>
                 "{persona.concern}"
               </p>
             </div>
@@ -270,28 +292,45 @@ export function NodeDetailsPanel({
 
         {/* Chat Dialog Sandbox */}
         {(node.state === 'active' || node.state === 'surviving' || node.state === 'killed') && (
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              <h4 className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 Validation Dialogue
               </h4>
               {node.state === 'active' && (
-                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded-sm">
-                  {exchangesRemaining} exchanges remaining
+                <span
+                  className="font-mono text-[9px] uppercase tracking-[0.12em] px-1.5 py-0.5"
+                  style={{
+                    color: '#f59e0b',
+                    background: 'rgba(245,158,11,0.08)',
+                    border: '1px solid rgba(245,158,11,0.20)',
+                  }}
+                >
+                  Exchange {String(exchangesUsed).padStart(2,'0')} / 03
                 </span>
               )}
             </div>
 
             {/* Chat Messages Frame */}
-            <div className="border border-border/40 rounded-md bg-surface-2/10 p-3 space-y-3 max-h-[300px] overflow-y-auto scrollbar-thin flex flex-col">
-              {/* Initial Persona Prompt reply */}
+            <div
+              className="liquid-glass p-3 space-y-3 max-h-[300px] overflow-y-auto scrollbar-thin flex flex-col"
+            >
+              {/* Initial Persona message */}
               <div className="flex gap-2 self-start max-w-[90%]">
                 <img
                   src={getPersonaAvatar(persona?.name || 'Market Skeptic')}
                   alt={persona?.name || 'AI Analyst'}
-                  className="size-5 rounded-full object-cover shrink-0"
+                  className="size-5 object-cover shrink-0"
+                  style={{ filter: 'grayscale(40%)' }}
                 />
-                <div className="rounded-lg bg-surface-2/30 text-[11px] leading-relaxed p-2.5 text-foreground border border-border/40">
+                <div
+                  className="font-mono text-[10px] leading-relaxed p-2.5"
+                  style={{
+                    borderLeft: '1px solid rgba(255,255,255,0.15)',
+                    paddingLeft: '10px',
+                    color: 'rgba(255,255,255,0.65)',
+                  }}
+                >
                   {node.reasoning || 'Convince me that this assumption is valid. Please provide concrete evidence.'}
                 </div>
               </div>
@@ -303,17 +342,28 @@ export function NodeDetailsPanel({
                   className={`flex gap-2 max-w-[90%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}
                 >
                   {msg.role === 'user' ? (
-                    <div className="flex size-5 shrink-0 items-center justify-center rounded-full border bg-primary/20 border-primary/30 text-primary">
-                      <User className="size-3" />
+                    <div
+                      className="flex size-5 shrink-0 items-center justify-center"
+                      style={{ border: '1px solid rgba(34,211,238,0.30)', background: 'rgba(34,211,238,0.06)' }}
+                    >
+                      <User className="size-3" style={{ color: '#22d3ee' }} />
                     </div>
                   ) : (
                     <img
                       src={getPersonaAvatar(persona?.name || 'Market Skeptic')}
                       alt={persona?.name || 'AI Analyst'}
-                      className="size-5 rounded-full object-cover shrink-0"
+                      className="size-5 object-cover shrink-0"
+                      style={{ filter: 'grayscale(40%)' }}
                     />
                   )}
-                  <div className={`rounded-lg leading-relaxed p-2.5 text-[11px] border ${msg.role === 'user' ? 'bg-primary/10 text-foreground border-primary/20' : 'bg-surface-2/30 text-foreground border-border/40'}`}>
+                  <div
+                    className="font-mono leading-relaxed p-2 text-[10px]"
+                    style={
+                      msg.role === 'user'
+                        ? { borderLeft: '1px solid #22d3ee', paddingLeft: '10px', color: 'rgba(255,255,255,0.80)' }
+                        : { borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: '10px', color: 'rgba(255,255,255,0.65)' }
+                    }
+                  >
                     {msg.content}
                   </div>
                 </div>
@@ -326,14 +376,26 @@ export function NodeDetailsPanel({
 
         {/* Locked / Blocked Warnings */}
         {(node.state === 'locked' || node.state === 'blocked') && (
-          <div className="rounded border border-dashed border-border/40 bg-surface-2/15 p-4 text-center space-y-2">
-            <div className="flex justify-center text-muted-foreground">
-              {node.state === 'blocked' ? <AlertTriangle className="size-5 text-red-500/80" /> : <Lock className="size-5" />}
+          <div
+            className="p-4 text-center space-y-2"
+            style={{
+              border: node.state === 'blocked'
+                ? '1px solid rgba(239,68,68,0.25)'
+                : '1px dashed rgba(255,255,255,0.12)',
+              background: node.state === 'blocked' ? 'rgba(239,68,68,0.04)' : 'rgba(255,255,255,0.04)',
+              borderRadius: '12px',
+            }}
+          >
+            <div className="flex justify-center">
+              {node.state === 'blocked'
+                ? <AlertTriangle className="size-5" style={{ color: 'rgba(239,68,68,0.70)' }} />
+                : <Lock className="size-5" style={{ color: 'rgba(255,255,255,0.30)' }} />
+              }
             </div>
-            <h5 className="text-[12px] font-semibold text-foreground">
+            <h5 className="font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
               {node.state === 'blocked' ? 'Assumption Blocked' : 'Assumption Locked'}
             </h5>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
+            <p className="font-mono text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.40)' }}>
               {node.state === 'blocked'
                 ? 'An upstream assumption this node depends on has been killed. This validation branch is blocked.'
                 : 'This assumption is locked because upstream dependencies are not yet validated. Resolve dependencies first.'}
@@ -342,33 +404,36 @@ export function NodeDetailsPanel({
         )}
 
         {/* Upstream Dependencies Tracker */}
-        <div className="space-y-2.5 border-t border-border/40 pt-4">
+        <div className="space-y-2 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           <div className="flex items-center gap-1.5">
-            <GitBranch className="size-3.5 text-muted-foreground" strokeWidth={1.5} />
-            <h4 className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
+            <GitBranch className="size-3" strokeWidth={1.5} style={{ color: 'rgba(255,255,255,0.35)' }} />
+            <h4 className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
               Dependencies ({deps.length})
             </h4>
           </div>
           {deps.length === 0 ? (
-            <p className="text-[11px] text-muted-foreground italic">
+            <p className="font-mono text-[10px] italic" style={{ color: 'rgba(255,255,255,0.30)' }}>
               Root assumption — no upstream dependencies.
             </p>
           ) : (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               {deps.map((dep) => (
                 <button
                   key={dep.id}
                   onClick={() => onSelect(dep.id)}
-                  className="group flex items-center gap-2.5 rounded-sm border border-border/40 bg-surface-1/20 px-3 py-1.5 text-left transition-colors hover:border-border-strong hover:bg-surface-2/30"
+                  className="group flex items-center gap-2.5 px-3 py-1.5 text-left transition-colors cursor-pointer"
+                  style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', borderRadius: '8px' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.16)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)' }}
                 >
                   <span
-                    className="size-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: STATE_META[dep.state]?.color ?? '#737373' }}
+                    className="size-1.5 shrink-0"
+                    style={{ background: STATE_META[dep.state]?.color ?? '#737373' }}
                   />
-                  <span className="flex-1 truncate text-xs text-secondary-foreground group-hover:text-foreground">
+                  <span className="flex-1 truncate font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.60)' }}>
                     {dep.label}
                   </span>
-                  <span className="font-mono text-[9px] text-muted-foreground">
+                  <span className="font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.30)' }}>
                     {dep.id.toUpperCase()}
                   </span>
                 </button>
@@ -380,7 +445,7 @@ export function NodeDetailsPanel({
 
       {/* Dialogue Input Drawer */}
       {node.state === 'active' && (
-        <div className="border-t border-border/40 bg-surface-1/25 p-4 shrink-0 space-y-2 backdrop-blur-[20px] saturate-[1.4]">
+        <div className="p-4 shrink-0 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.12)', background: 'transparent' }}>
           {exchangesRemaining > 0 ? (
             <div className="flex gap-2">
               <textarea
@@ -395,18 +460,26 @@ export function NodeDetailsPanel({
                 disabled={sending}
                 placeholder="Argue your case, supply metrics/evidence…"
                 rows={2}
-                className="flex-1 resize-none rounded-sm border border-border/40 bg-surface-2/30 px-3 py-1.5 text-[11px] leading-relaxed text-foreground placeholder:text-muted-foreground/60 focus:border-border-strong focus:outline-none disabled:opacity-50"
+                className="flex-1 resize-none bg-transparent px-3 py-1.5 font-mono text-[10px] leading-relaxed text-foreground focus:outline-none disabled:opacity-50"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(0,0,0,0.2)',
+                  borderRadius: '8px',
+                }}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={sending || !chatMessage.trim()}
-                className="flex size-9 shrink-0 items-center justify-center rounded-sm bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-40 cursor-pointer"
+                className="flex size-9 shrink-0 items-center justify-center transition-colors cursor-pointer disabled:opacity-40"
+                style={{ border: '1px solid rgba(255,255,255,0.20)', background: 'transparent', color: 'rgba(255,255,255,0.60)' }}
+                onMouseEnter={(e) => { if (!sending && chatMessage.trim()) (e.currentTarget as HTMLButtonElement).style.borderColor = '#22d3ee' }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.20)' }}
               >
-                <Send className="size-4" />
+                <Send className="size-3.5" />
               </button>
             </div>
           ) : (
-            <div className="text-[11px] text-center text-red-400 font-mono py-1">
+            <div className="font-mono text-[10px] text-center py-1" style={{ color: '#ef4444' }}>
               Exchanges exhausted. Assumption validation closed.
             </div>
           )}
@@ -415,12 +488,15 @@ export function NodeDetailsPanel({
 
       {/* Resolved State Informer */}
       {(node.state === 'surviving' || node.state === 'killed') && (
-        <div className="border-t border-border/40 bg-surface-2/20 p-4 shrink-0 text-center">
-          <div className="flex items-center justify-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em]" style={{ color: meta.color }}>
+        <div className="p-4 shrink-0 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.12)', background: 'transparent' }}>
+          <div
+            className="flex items-center justify-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em]"
+            style={{ color: meta.color }}
+          >
             <CheckCircle2 className="size-3.5" />
             {node.state === 'surviving' ? 'Validation Passed' : 'Validation Failed'}
           </div>
-          <p className="mt-1 text-[10px] text-muted-foreground leading-relaxed max-w-[280px] mx-auto">
+          <p className="mt-1 font-mono text-[9px] leading-relaxed max-w-[280px] mx-auto" style={{ color: 'rgba(255,255,255,0.35)' }}>
             {node.state === 'surviving'
               ? 'The persona has been convinced by your evidence. Node is now validated.'
               : 'Failed to convince the persona within 3 exchanges. Downstream path is blocked.'}
@@ -433,11 +509,14 @@ export function NodeDetailsPanel({
 
 function Meta({ label, value }: { label: string; value: string }) {
   return (
-    <div className="px-4 py-2">
-      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-muted-foreground">
+    <div
+      className="px-4 py-2"
+      style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
+    >
+      <div className="font-mono text-[8px] uppercase tracking-[0.20em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
         {label}
       </div>
-      <div className="mt-0.5 text-[11px] font-semibold text-foreground truncate">{value}</div>
+      <div className="mt-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-foreground truncate">{value}</div>
     </div>
   )
 }
@@ -452,10 +531,10 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <div className="border-b border-border/40 px-5 py-4">
-      <div className="mb-2.5 flex items-center gap-1.5">
-        {Icon && <Icon className="size-3.5 text-muted-foreground" strokeWidth={1.5} />}
-        <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+    <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="mb-2.5 flex items-center gap-1.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px' }}>
+        {Icon && <Icon className="size-3" strokeWidth={1.5} style={{ color: 'rgba(255,255,255,0.35)' }} />}
+        <h3 className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
           {title}
         </h3>
       </div>

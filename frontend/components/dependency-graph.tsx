@@ -61,21 +61,21 @@ function buildNodeObject(node: AssumptionNode, selected: boolean): THREE.Object3
 
   // Outer ring for root nodes
   if (node.isRoot) {
-    roundRect(ctx, x - 4, y - 4, w + 8, h + 8, 18)
+    roundRect(ctx, x - 4, y - 4, w + 8, h + 8, 12)
     ctx.strokeStyle = `${color}40`
     ctx.lineWidth = 1.5
     ctx.stroke()
   }
 
   // Body — frosted dark surface
-  roundRect(ctx, x, y, w, h, 14)
+  roundRect(ctx, x, y, w, h, 8)
   ctx.fillStyle = 'rgba(12,12,12,0.96)'
   ctx.fill()
 
   // Internal glow for surviving / selected
   if (node.state === 'surviving' || selected) {
     ctx.save()
-    roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 13)
+    roundRect(ctx, x + 1, y + 1, w - 2, h - 2, 7)
     ctx.clip()
     const grad = ctx.createLinearGradient(0, y, 0, y + h)
     grad.addColorStop(0, `${color}1F`)
@@ -86,14 +86,14 @@ function buildNodeObject(node: AssumptionNode, selected: boolean): THREE.Object3
   }
 
   // Border
-  roundRect(ctx, x, y, w, h, 14)
+  roundRect(ctx, x, y, w, h, 8)
   ctx.strokeStyle = selected ? color : `${color}${node.state === 'blocked' ? '66' : 'AA'}`
   ctx.lineWidth = selected ? 2.5 : 1.25
   ctx.stroke()
 
   // Accent left bar
   ctx.save()
-  roundRect(ctx, x, y, w, h, 14)
+  roundRect(ctx, x, y, w, h, 8)
   ctx.clip()
   ctx.fillStyle = color
   ctx.fillRect(x, y, 3, h)

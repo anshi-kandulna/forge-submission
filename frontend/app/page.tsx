@@ -129,17 +129,16 @@ export default function Page() {
 
   return (
     <div className="relative z-10 flex h-screen w-full overflow-hidden bg-transparent text-foreground">
-      <AmbientField />
       <Sidebar active={section} onChange={handleSectionChange} graphId={app.graphId ?? '—'} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopHeader stats={stats} validationScore={activePlan.validationScore} graphId={app.graphId ?? '—'} />
+        <TopHeader stats={stats} graphId={app.graphId ?? '—'} />
 
         {isLoading && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="absolute inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(255, 255, 255, 0.45)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
             <div className="flex flex-col items-center gap-3">
-              <Loader2 className="size-8 animate-spin text-muted-foreground" />
-              <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground">
+              <Loader2 className="size-6 animate-spin" style={{ color: '#0f172a' }} />
+              <span className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: '#0f172a' }}>
                 {loadingLabel[app.stage]}
               </span>
             </div>
@@ -147,7 +146,7 @@ export default function Page() {
         )}
 
         {app.error && (
-          <div className="border-b border-red-900/40 bg-red-950/30 px-5 py-2 font-mono text-[11px] text-red-400">
+          <div className="border-b px-5 py-2 font-mono text-[9px] uppercase tracking-[0.14em]" style={{ borderColor: 'rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.04)', color: '#ef4444' }}>
             {app.error}
             <button className="ml-4 underline opacity-70 hover:opacity-100" onClick={() => setApp((s) => ({ ...s, error: null }))}>
               dismiss
@@ -195,7 +194,7 @@ export default function Page() {
           </main>
 
           {!showPersonaIntro && section === 'graph' && (
-            <aside className="hidden w-[360px] shrink-0 m-3 border border-border/40 rounded-[20px] liquid-glass lg:block">
+            <aside className="hidden lg:block w-[360px] shrink-0 m-0 glass-aside">
               <NodeDetailsPanel
                 node={selectedNode}
                 allNodes={app.nodes}

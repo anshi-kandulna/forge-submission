@@ -15,7 +15,7 @@ export function StateBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.12em]',
+        'inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.14em]',
         className,
       )}
       style={{
@@ -26,7 +26,7 @@ export function StateBadge({
     >
       {showDot && (
         <span
-          className="size-1.5 rounded-full"
+          className="size-1.5"
           style={{ backgroundColor: meta.color }}
         />
       )}

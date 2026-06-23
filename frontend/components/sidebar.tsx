@@ -41,38 +41,48 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        'relative flex h-full shrink-0 flex-col border-r border-border bg-sidebar transition-all duration-300 ease-in-out',
-        isCollapsed ? 'w-16' : 'w-64'
+        'glass-sidebar relative flex h-full shrink-0 flex-col transition-all duration-300 ease-in-out',
+        isCollapsed ? 'w-14' : 'w-56'
       )}
     >
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute top-1/2 -right-2 z-50 flex -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground cursor-pointer transition-all duration-200"
+        className="absolute top-1/2 -right-3 z-50 flex -translate-y-1/2 items-center justify-center cursor-pointer transition-all duration-200"
+        style={{ color: 'rgba(255,255,255,0.35)' }}
         title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
-        {isCollapsed ? <ChevronRight className="size-4" /> : <ChevronLeft className="size-4" />}
+        {isCollapsed ? <ChevronRight className="size-3.5" /> : <ChevronLeft className="size-3.5" />}
       </button>
 
       {/* Logo Area */}
-      <div className={cn(
-        'flex h-[88px] items-center border-b border-border px-4 transition-all duration-300',
-        isCollapsed ? 'justify-center' : 'justify-between'
-      )}>
+      <div
+        className={cn(
+          'flex h-[88px] items-center px-4 transition-all duration-300',
+          isCollapsed ? 'justify-center' : 'justify-between'
+        )}
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}
+      >
         {isCollapsed ? (
-          <div className="flex size-7 items-center justify-center rounded-sm border border-border-strong bg-surface-2">
+          <div
+            className="flex size-7 items-center justify-center rounded-md"
+            style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)' }}
+          >
             <Hexagon className="size-4 text-foreground" strokeWidth={1.5} />
           </div>
         ) : (
           <div className="flex items-center gap-2.5 overflow-hidden animate-fade-in">
-            <div className="flex size-7 shrink-0 items-center justify-center rounded-sm border border-border-strong bg-surface-2">
+            <div
+              className="flex size-7 shrink-0 items-center justify-center rounded-md"
+              style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)' }}
+            >
               <Hexagon className="size-4 text-foreground" strokeWidth={1.5} />
             </div>
             <div className="leading-tight">
-              <div className="text-[13px] font-semibold tracking-tight text-foreground whitespace-nowrap">
+              <div className="font-mono text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground whitespace-nowrap">
                 Zero-to-One
               </div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground whitespace-nowrap">
+              <div className="font-mono text-[9px] uppercase tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
                 Builder
               </div>
             </div>
@@ -83,11 +93,14 @@ export function Sidebar({
       {/* Nav */}
       <nav className={cn('flex-1 py-4 transition-all duration-300', isCollapsed ? 'px-2' : 'px-3')}>
         {!isCollapsed && (
-          <div className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground animate-fade-in">
+          <div
+            className="px-2 pb-3 font-mono text-[9px] uppercase tracking-[0.25em] animate-fade-in"
+            style={{ color: 'rgba(255,255,255,0.22)' }}
+          >
             Analysis Pipeline
           </div>
         )}
-        <ul className={cn('flex flex-col gap-1', isCollapsed ? 'items-center' : '')}>
+        <ul className={cn('flex flex-col gap-0.5', isCollapsed ? 'items-center' : '')}>
           {NAV.map((item) => {
             const Icon = item.icon
             const isActive = active === item.id
@@ -97,45 +110,54 @@ export function Sidebar({
                   <button
                     onClick={() => onChange(item.id)}
                     className={cn(
-                      'group relative flex size-9 items-center justify-center rounded-sm transition-colors cursor-pointer',
-                      isActive
-                        ? 'bg-surface-3 text-foreground'
-                        : 'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground',
+                      'group relative flex size-9 items-center justify-center rounded-lg transition-colors cursor-pointer',
                     )}
+                    style={{
+                      borderLeft: isActive ? '2px solid #22d3ee' : '2px solid transparent',
+                      background: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                    }}
                   >
                     <Icon
-                      className={cn(
-                        'size-4 shrink-0',
-                        isActive ? 'text-foreground' : 'text-muted-foreground',
-                      )}
+                      className="size-4 shrink-0"
+                      style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.35)' }}
                       strokeWidth={1.5}
                     />
                     {/* Floating Tooltip */}
-                    <div className="absolute left-full ml-3 z-50 hidden group-hover:block rounded bg-popover border border-border px-2 py-1 text-xs text-popover-foreground shadow-md whitespace-nowrap pointer-events-none font-medium">
+                    <div
+                      className="absolute left-full ml-3 z-50 hidden group-hover:block px-2 py-1 text-[10px] uppercase tracking-[0.14em] whitespace-nowrap pointer-events-none rounded-md"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        color: '#000000',
+                      }}
+                    >
                       {item.label}
                     </div>
                   </button>
                 ) : (
                   <button
                     onClick={() => onChange(item.id)}
-                    className={cn(
-                      'group flex w-full items-center gap-3 rounded-sm px-2.5 py-2 text-left text-[13px] transition-colors cursor-pointer',
-                      isActive
-                        ? 'bg-surface-3 text-foreground'
-                        : 'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground',
-                    )}
+                    className="group flex w-full items-center gap-3 px-3 py-2 text-left transition-colors cursor-pointer rounded-lg"
+                    style={{
+                      borderLeft: isActive ? '2px solid #22d3ee' : '2px solid transparent',
+                      background: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                    }}
                   >
                     <Icon
-                      className={cn(
-                        'size-4 shrink-0',
-                        isActive ? 'text-foreground' : 'text-muted-foreground',
-                      )}
+                      className="size-4 shrink-0"
+                      style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.35)' }}
                       strokeWidth={1.5}
                     />
-                    <span className="flex-1 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span
+                      className="flex-1 font-mono text-[11px] uppercase tracking-[0.12em] whitespace-nowrap overflow-hidden text-ellipsis"
+                      style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.40)' }}
+                    >
                       {item.label}
                     </span>
-                    <span className="font-mono text-[10px] text-muted-foreground/60">
+                    <span
+                      className="font-mono text-[9px]"
+                      style={{ color: 'rgba(255,255,255,0.18)' }}
+                    >
                       {item.meta}
                     </span>
                   </button>
@@ -147,18 +169,27 @@ export function Sidebar({
       </nav>
 
       {/* Bottom status */}
-      <div className={cn('border-t border-border py-4 transition-all duration-300', isCollapsed ? 'px-2' : 'px-4')}>
+      <div
+        className={cn('py-4 transition-all duration-300', isCollapsed ? 'px-2' : 'px-4')}
+        style={{ borderTop: '1px solid rgba(255,255,255,0.03)' }}
+      >
         {isCollapsed ? (
           <div className="flex flex-col items-center gap-3">
-            <div className="group relative flex cursor-pointer items-center justify-center">
-              <Circle className="size-2.5 fill-current text-[#22d3ee]" />
-              <div className="absolute left-full ml-3 z-50 hidden group-hover:block rounded bg-popover border border-border px-2 py-1 text-xs text-popover-foreground shadow-md whitespace-nowrap pointer-events-none font-medium">
+             <div className="group relative flex cursor-pointer items-center justify-center">
+              <Circle className="size-2" style={{ color: '#22d3ee', fill: '#22d3ee' }} />
+              <div
+                className="absolute left-full ml-3 z-50 hidden group-hover:block px-2 py-1 text-[9px] uppercase tracking-[0.14em] whitespace-nowrap pointer-events-none rounded-md"
+                style={{ background: 'rgba(255, 255, 255, 0.95)', border: '1px solid rgba(255,255,255,0.2)', color: '#000000' }}
+              >
                 Graph: Analyzed
               </div>
             </div>
             <div className="group relative flex cursor-pointer items-center justify-center">
-              <Circle className="size-2.5 fill-current text-[#22d3ee]" />
-              <div className="absolute left-full ml-3 z-50 hidden group-hover:block rounded bg-popover border border-border px-2 py-1 text-xs text-popover-foreground shadow-md whitespace-nowrap pointer-events-none font-medium">
+              <Circle className="size-2" style={{ color: '#22d3ee', fill: '#22d3ee' }} />
+              <div
+                className="absolute left-full ml-3 z-50 hidden group-hover:block px-2 py-1 text-[9px] uppercase tracking-[0.14em] whitespace-nowrap pointer-events-none rounded-md"
+                style={{ background: 'rgba(255, 255, 255, 0.95)', border: '1px solid rgba(255,255,255,0.2)', color: '#000000' }}
+              >
                 System: Operational
               </div>
             </div>
@@ -167,11 +198,11 @@ export function Sidebar({
           <>
             <StatusRow label="Graph Status" value="Analyzed" tone="ok" />
             <StatusRow label="System" value="Operational" tone="ok" />
-            <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground whitespace-nowrap">
+            <div className="mt-3 flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <span className="font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
                 Graph ID
               </span>
-              <span className="font-mono text-[10px] text-secondary-foreground truncate max-w-[120px]" title={graphId}>
+              <span className="font-mono text-[9px] truncate max-w-[100px]" style={{ color: 'rgba(255,255,255,0.50)' }} title={graphId}>
                 {graphId}
               </span>
             </div>
@@ -193,13 +224,13 @@ function StatusRow({
 }) {
   return (
     <div className="flex items-center justify-between py-1">
-      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground whitespace-nowrap">
+      <span className="font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
         {label}
       </span>
-      <span className="flex items-center gap-1.5 text-[11px] text-secondary-foreground">
+      <span className="flex items-center gap-1.5 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.50)' }}>
         <Circle
-          className="size-2 fill-current"
-          style={{ color: tone === 'ok' ? '#22d3ee' : '#f59e0b' }}
+          className="size-1.5"
+          style={{ color: tone === 'ok' ? '#22d3ee' : '#f59e0b', fill: tone === 'ok' ? '#22d3ee' : '#f59e0b' }}
         />
         {value}
       </span>

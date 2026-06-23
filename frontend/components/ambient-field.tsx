@@ -64,16 +64,16 @@ export interface AmbientFieldProps {
 }
 
 export function AmbientField({
-  gradientStart = '#d9a7c7',
-  gradientEnd = '#fffcdc',
-  colorBright = '#e6b45a',
-  colorMid = '#a06e32',
-  colorDark = '#322314',
-  color = '#ad8043',
-  background = '#050505',
-  cellSize = 8,
-  hotspotCount = 12,
-  circleSize = 320,
+  gradientStart = '#005fa3',
+  gradientEnd = '#f8fafc',
+  colorBright = '#ffffff',
+  colorMid = '#83a8c3',
+  colorDark = '#003a66',
+  color = '#22d3ee',
+  background = 'transparent',
+  cellSize = 10,
+  hotspotCount = 8,
+  circleSize = 280,
   trailRadius = 65,
   trailDuration = 6,
 }: AmbientFieldProps) {
@@ -222,8 +222,12 @@ export function AmbientField({
 
     let rafId: number
     function frame() {
-      ctx.fillStyle = background
-      ctx.fillRect(0, 0, width, height)
+      if (background === 'transparent') {
+        ctx.clearRect(0, 0, width, height)
+      } else {
+        ctx.fillStyle = background
+        ctx.fillRect(0, 0, width, height)
+      }
 
       // Move hotspots, apply organic velocity jitter, and bounce off boundaries
       for (const h of hotspots) {

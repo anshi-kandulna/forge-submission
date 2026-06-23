@@ -44,53 +44,53 @@
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 38px;
+  --radius: 28px;
 }
 
 :root {
   color-scheme: dark;
 
-  --background: #050505;
+  --background: transparent;
   --foreground: #ffffff;
 
-  --surface-1: #0a0a0a;
-  --surface-2: #111111;
-  --surface-3: #161616;
+  --surface-1: rgba(255, 255, 255, 0.02);
+  --surface-2: rgba(255, 255, 255, 0.04);
+  --surface-3: rgba(255, 255, 255, 0.06);
 
-  --card: #0a0a0a;
+  --card: rgba(255, 255, 255, 0.15);
   --card-foreground: #ffffff;
-  --popover: #111111;
+  --popover: rgba(255, 255, 255, 0.25);
   --popover-foreground: #ffffff;
 
-  --primary: #e8e8e8;
+  --primary: #ffffff;
   --primary-foreground: #050505;
-  --secondary: #161616;
-  --secondary-foreground: #e8e8e8;
-  --muted: #111111;
-  --muted-foreground: #b8b8b8;
-  --accent: #161616;
+  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary-foreground: #d4d4d4;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: #cbd5e1;
+  --accent: rgba(255, 255, 255, 0.06);
   --accent-foreground: #ffffff;
   --destructive: #ef4444;
 
-  --border: #222222;
-  --border-strong: #2a2a2a;
-  --input: #222222;
-  --ring: #2a2a2a;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: rgba(255, 255, 255, 0.20);
 
+  /* State tokens */
   --state-surviving: #22d3ee;
   --state-contested: #f59e0b;
   --state-killed: #ef4444;
   --state-blocked: #525252;
 
-  --radius: 0.5rem;
-
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #d4d4d4;
-  --sidebar-border: #222222;
-  --sidebar-accent: #161616;
+  --sidebar: rgba(255, 255, 255, 0.06);
+  --sidebar-foreground: #cbd5e1;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-accent: rgba(255, 255, 255, 0.06);
   --sidebar-accent-foreground: #ffffff;
 }
 
@@ -99,7 +99,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #005fa3 0%, #f8fafc 100%) !important;
+    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -108,19 +109,35 @@
   }
 }
 
-/* Custom thin scrollbars for enterprise feel */
+/* Scan-line overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.015) 0px,
+    rgba(0, 0, 0, 0.015) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Thin scrollbars */
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
   .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: var(--border-strong);
-    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
@@ -128,54 +145,137 @@
   .text-tabular {
     font-variant-numeric: tabular-nums;
   }
+
+  /* HUD label utility */
+  .hud-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.60) !important;
+  }
 }
 
+/* Glassmorphism — applied to all cards and panels */
 .liquid-glass {
-  background: rgba(35, 35, 40, 0.55) !important;
-  backdrop-filter: blur(22px) saturate(1.4) brightness(1.08) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(1.4) brightness(1.08) !important;
-  border-radius: 20px !important;
-  border: none !important;
-  overflow: hidden !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 36px !important;
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    0 12px 32px rgba(0, 0, 0, 0.5) !important;
-  --glass-shine-angle: 15deg;
+    0 8px 32px 0 rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05) !important;
 }
-
-.liquid-glass:not(.absolute):not(.fixed):not(.relative):not(.sticky) {
-  position: relative;
-}
-
-.liquid-glass:nth-child(2n) { --glass-shine-angle: 75deg; }
-.liquid-glass:nth-child(3n) { --glass-shine-angle: 135deg; }
-.liquid-glass:nth-child(4n) { --glass-shine-angle: 195deg; }
-.liquid-glass:nth-child(5n) { --glass-shine-angle: 255deg; }
-.liquid-glass:nth-child(6n) { --glass-shine-angle: 315deg; }
-.liquid-glass:nth-child(3n+1) { --glass-shine-angle: 45deg; }
-.liquid-glass:nth-child(4n+2) { --glass-shine-angle: 115deg; }
-.liquid-glass:nth-child(5n+3) { --glass-shine-angle: 220deg; }
-.liquid-glass:nth-child(6n+4) { --glass-shine-angle: 290deg; }
 
 .liquid-glass::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  border-radius: inherit !important;
-  padding: 1px !important; /* thin, crisp highlight border */
-  background: conic-gradient(
-    from var(--glass-shine-angle, 0deg),
-    rgba(255, 255, 255, 0.5) 0deg,
-    rgba(255, 255, 255, 0.08) 60deg,
-    rgba(255, 255, 255, 0.08) 300deg,
-    rgba(255, 255, 255, 0.5) 360deg
-  ) !important;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0) !important;
-  -webkit-mask-composite: xor !important;
-  mask-composite: exclude !important;
-  pointer-events: none !important;
-  box-sizing: border-box !important;
+  display: none !important;
+}
+
+/* Glassmorphism for the top header bar */
+.glass-header {
+  background: rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Glassmorphism for sidebar */
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    4px 0 30px rgba(0, 0, 0, 0.04),
+    inset -1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Glassmorphism for right aside panel */
+.glass-aside {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    -4px 0 30px rgba(0, 0, 0, 0.04),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ==========================================================================
+   Brightened Secondary Text Style Overrides
+   ========================================================================== */
+
+/* Map inline low-opacity white text to higher visibility opacity */
+[style*="color: rgba(255, 255, 255, 0.18)"],
+[style*="color:rgba(255, 255, 255, 0.18)"],
+[style*="color: rgba(255,255,255,0.18)"],
+[style*="color:rgba(255,255,255,0.18)"],
+[style*="color: rgba(255, 255, 255, 0.2)"],
+[style*="color:rgba(255, 255, 255, 0.2)"],
+[style*="color: rgba(255,255,255,0.2)"],
+[style*="color:rgba(255,255,255,0.2)"],
+[style*="color: rgba(255, 255, 255, 0.22)"],
+[style*="color:rgba(255, 255, 255, 0.22)"],
+[style*="color: rgba(255,255,255,0.22)"],
+[style*="color:rgba(255,255,255,0.22)"] {
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+[style*="color: rgba(255, 255, 255, 0.3)"],
+[style*="color:rgba(255, 255, 255, 0.3)"],
+[style*="color: rgba(255,255,255,0.3)"],
+[style*="color:rgba(255,255,255,0.3)"],
+[style*="color: rgba(255, 255, 255, 0.30)"],
+[style*="color:rgba(255, 255, 255, 0.30)"],
+[style*="color: rgba(255,255,255,0.30)"],
+[style*="color:rgba(255,255,255,0.30)"],
+[style*="color: rgba(255, 255, 255, 0.35)"],
+[style*="color:rgba(255, 255, 255, 0.35)"],
+[style*="color: rgba(255,255,255,0.35)"],
+[style*="color:rgba(255,255,255,0.35)"] {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+
+[style*="color: rgba(255, 255, 255, 0.4)"],
+[style*="color:rgba(255, 255, 255, 0.4)"],
+[style*="color: rgba(255,255,255,0.4)"],
+[style*="color:rgba(255,255,255,0.4)"],
+[style*="color: rgba(255, 255, 255, 0.40)"],
+[style*="color:rgba(255, 255, 255, 0.40)"],
+[style*="color: rgba(255,255,255,0.40)"],
+[style*="color:rgba(255,255,255,0.40)"],
+[style*="color: rgba(255, 255, 255, 0.45)"],
+[style*="color:rgba(255, 255, 255, 0.45)"],
+[style*="color: rgba(255,255,255,0.45)"],
+[style*="color:rgba(255,255,255,0.45)"] {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+[style*="color: rgba(255, 255, 255, 0.6)"],
+[style*="color:rgba(255, 255, 255, 0.6)"],
+[style*="color: rgba(255,255,255,0.6)"],
+[style*="color:rgba(255,255,255,0.6)"],
+[style*="color: rgba(255, 255, 255, 0.60)"],
+[style*="color:rgba(255, 255, 255, 0.60)"],
+[style*="color: rgba(255,255,255,0.60)"],
+[style*="color:rgba(255,255,255,0.60)"],
+[style*="color: rgba(255, 255, 255, 0.65)"],
+[style*="color:rgba(255, 255, 255, 0.65)"],
+[style*="color: rgba(255,255,255,0.65)"],
+[style*="color:rgba(255,255,255,0.65)"] {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+
+/* Ensure subheaders and details labels inside layouts are legible */
+.hud-label {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+.text-muted-foreground {
+  color: rgba(255, 255, 255, 0.68) !important;
 }
 

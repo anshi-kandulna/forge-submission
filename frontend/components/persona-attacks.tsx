@@ -18,7 +18,7 @@ const VERDICT_COLOR: Record<string, string> = {
   Validated: '#22d3ee',
   Contested: '#f59e0b',
   Rejected: '#ef4444',
-  Inconclusive: '#8a8a8a',
+  Inconclusive: '#525252',
 }
 
 export function PersonaAttacks({
@@ -35,8 +35,8 @@ export function PersonaAttacks({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center bg-transparent">
-        <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground">
+      <div className="flex h-full items-center justify-center" style={{ background: 'transparent' }}>
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
           Submit an idea first to see adversarial analysis.
         </p>
       </div>
@@ -44,21 +44,22 @@ export function PersonaAttacks({
   }
 
   return (
-    <div className="scrollbar-thin h-full overflow-y-auto bg-transparent">
-      <div className="border-b border-border px-8 py-6">
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+    <div className="scrollbar-thin h-full overflow-y-auto" style={{ background: 'transparent' }}>
+      {/* Header */}
+      <div className="px-8 py-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="font-mono text-[9px] uppercase tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.30)' }}>
           Adversarial Review
         </div>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="mt-2 font-mono text-[22px] font-bold tracking-[0.12em] uppercase text-foreground">
           Persona Attacks
         </h1>
-        <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 max-w-2xl font-mono text-[11px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.40)' }}>
           AI analyst verdicts for each assumption. Assumptions are attacked
           layer-by-layer; only those whose dependencies survived are evaluated.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 p-8 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 p-8 lg:grid-cols-2">
         {analyzed.map((node, idx) => {
           const verdict = STATE_VERDICT[node.state] ?? 'Inconclusive'
           const color = VERDICT_COLOR[verdict]
@@ -71,19 +72,22 @@ export function PersonaAttacks({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.22, delay: idx * 0.03, ease: 'easeOut' }}
               onClick={() => onSelect(node.id)}
-              className="liquid-glass border border-border/40 rounded-lg p-6 text-left transition-colors hover:bg-surface-2/20 cursor-pointer"
+              className="liquid-glass p-5 text-left transition-all cursor-pointer hover:shadow-[0_8px_32px_rgba(0,0,0,0.20)] hover:border-white/30"
             >
               {/* Header */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-md border border-border-strong bg-surface-2/30">
-                    <Brain className="size-5 text-foreground" strokeWidth={1.5} />
+                  <div
+                    className="flex size-9 shrink-0 items-center justify-center"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)', background: '#0a0a0a' }}
+                  >
+                    <Brain className="size-4" strokeWidth={1.5} style={{ color: 'rgba(255,255,255,0.55)' }} />
                   </div>
                   <div>
-                    <div className="text-[13px] font-semibold text-foreground">
+                    <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-foreground">
                       AI Analyst
                     </div>
-                    <div className="text-[11px] text-muted-foreground">
+                    <div className="font-mono text-[9px] uppercase tracking-[0.12em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
                       {node.dimension} · {node.layer}
                     </div>
                   </div>
@@ -92,29 +96,30 @@ export function PersonaAttacks({
               </div>
 
               {/* Assumption label */}
-              <div className="mt-4 text-[13px] font-medium text-secondary-foreground">
+              <div className="mt-4 font-mono text-[12px] uppercase tracking-[0.06em]" style={{ color: 'rgba(255,255,255,0.75)' }}>
                 {node.label}
               </div>
 
               {/* Reasoning */}
-              <p className="mt-2 line-clamp-3 text-[12px] leading-relaxed text-muted-foreground">
+              <p className="mt-2 line-clamp-3 font-mono text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.40)' }}>
                 {node.reasoning ?? 'No reasoning returned.'}
               </p>
 
               {/* Footer */}
-              <div className="mt-4 flex items-center justify-between border-t border-border/40 pt-3">
+              <div className="mt-4 flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.12em]"
+                  className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.14em]"
                   style={{
                     color,
                     borderColor: `${color}33`,
-                    backgroundColor: `${color}0F`,
+                    border: `1px solid ${color}33`,
+                    backgroundColor: `${color}0A`,
                   }}
                 >
-                  <span className="size-1.5 rounded-full" style={{ backgroundColor: color }} />
+                  <span className="size-1.5" style={{ background: color }} />
                   {verdict}
                 </span>
-                <span className="font-mono text-[11px]" style={{ color: meta?.color ?? '#8a8a8a' }}>
+                <span className="font-mono text-[10px]" style={{ color: meta?.color ?? '#525252' }}>
                   {node.confidence}% confidence
                 </span>
               </div>
