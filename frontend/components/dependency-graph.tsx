@@ -10,6 +10,9 @@ interface GraphNode extends AssumptionNode {
   x?: number
   y?: number
   z?: number
+  fx?: number
+  fy?: number
+  fz?: number
 }
 
 const STATE_OPACITY: Record<string, number> = {
@@ -188,7 +191,16 @@ export default function DependencyGraph({
 
   const graphData = useMemo(
     () => ({
-      nodes: nodes.map((n) => ({ ...n })),
+      nodes: nodes.map((n) => {
+        let targetY = 0
+        if (n.layer === 'Foundational') targetY = 70
+        else if (n.layer === 'Structural') targetY = 0
+        else if (n.layer === 'Surface') targetY = -70
+        return {
+          ...n,
+          fy: targetY,
+        }
+      }),
       links: links.map((l) => ({ ...l })),
     }),
     [nodes, links],
@@ -216,11 +228,11 @@ export default function DependencyGraph({
     const fg = fgRef.current
     if (!fg) return
     const charge = fg.d3Force('charge') as { strength: (n: number) => void } | undefined
-    charge?.strength(-1400)
+    charge?.strength(-700)
     const linkForce = fg.d3Force('link') as
       | { distance: (d: number) => void }
       | undefined
-    linkForce?.distance(190)
+    linkForce?.distance(80)
   }, [])
 
   const nodeThreeObject = useCallback((node: GraphNode) => {

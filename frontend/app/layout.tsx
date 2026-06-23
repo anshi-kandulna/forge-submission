@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { AmbientField } from '@/components/ambient-field'
+import { AmbientBackground } from '@/components/ambient-background'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -38,9 +38,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${geistMono.variable}`}
     >
-      <body className="font-sans antialiased" style={{ background: 'transparent' }}>
-        {/* Canvas ambient field fixed at z-index -1, truly behind all glass elements */}
-        <AmbientField background="transparent" />
+      <body className="font-sans antialiased">
+        {/* Canvas ambient background layer with wireframe terrain grid and drifting threads */}
+        <AmbientBackground />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

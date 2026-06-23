@@ -18,7 +18,28 @@ import {
 import type { AssumptionNode, Persona } from '@/lib/types'
 import { STATE_META } from '@/lib/mock-data'
 import { StateBadge } from './state-badge'
-import { getPersonaAvatar } from '@/lib/personas'
+import { getPersonaIcon } from '@/lib/personas'
+
+// Small reusable badge that renders the persona's Lucide icon in a branded box
+function PersonaIconBadge({ name, size }: { name: string; size: 'sm' | 'md' }) {
+  const { icon: Icon, color } = getPersonaIcon(name)
+  const dim = size === 'md' ? 28 : 20
+  const iconSz = size === 'md' ? 14 : 11
+  return (
+    <div
+      className="shrink-0 flex items-center justify-center"
+      style={{
+        width: dim,
+        height: dim,
+        borderRadius: size === 'md' ? 8 : 6,
+        background: `${color}18`,
+        border: `1px solid ${color}55`,
+      }}
+    >
+      <Icon size={iconSz} color={color} strokeWidth={1.8} />
+    </div>
+  )
+}
 
 export function NodeDetailsPanel({
   node,
@@ -268,12 +289,7 @@ export function NodeDetailsPanel({
         {persona && (
           <div className="liquid-glass p-3.5 space-y-2">
             <div className="flex items-center gap-2">
-              <img
-                src={getPersonaAvatar(persona.name)}
-                alt={persona.name}
-                className="size-7 object-cover shrink-0"
-                style={{ filter: 'grayscale(40%)' }}
-              />
+              <PersonaIconBadge name={persona.name} size="md" />
               <div>
                 <h4 className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-foreground">{persona.name}</h4>
                 <p className="font-mono text-[9px] uppercase tracking-[0.12em]" style={{ color: 'rgba(255,255,255,0.35)' }}>{persona.role}</p>
@@ -317,12 +333,7 @@ export function NodeDetailsPanel({
             >
               {/* Initial Persona message */}
               <div className="flex gap-2 self-start max-w-[90%]">
-                <img
-                  src={getPersonaAvatar(persona?.name || 'Market Skeptic')}
-                  alt={persona?.name || 'AI Analyst'}
-                  className="size-5 object-cover shrink-0"
-                  style={{ filter: 'grayscale(40%)' }}
-                />
+                <PersonaIconBadge name={persona?.name || 'Market Skeptic'} size="sm" />
                 <div
                   className="font-mono text-[10px] leading-relaxed p-2.5"
                   style={{
@@ -349,12 +360,7 @@ export function NodeDetailsPanel({
                       <User className="size-3" style={{ color: '#22d3ee' }} />
                     </div>
                   ) : (
-                    <img
-                      src={getPersonaAvatar(persona?.name || 'Market Skeptic')}
-                      alt={persona?.name || 'AI Analyst'}
-                      className="size-5 object-cover shrink-0"
-                      style={{ filter: 'grayscale(40%)' }}
-                    />
+                    <PersonaIconBadge name={persona?.name || 'Market Skeptic'} size="sm" />
                   )}
                   <div
                     className="font-mono leading-relaxed p-2 text-[10px]"

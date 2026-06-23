@@ -98,8 +98,8 @@
   * {
     @apply border-border;
   }
-  body {
-    background: linear-gradient(135deg, #005fa3 0%, #f8fafc 100%) !important;
+  html, body {
+    background: linear-gradient(135deg, #243c56 0%, #0c141d 100%) !important;
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
